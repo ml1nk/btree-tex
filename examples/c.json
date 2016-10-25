@@ -1,0 +1,13 @@
+{
+  "order" : 2,
+  "todo" : [
+    {
+      "operation" : "insert",
+      "parameter" : [49,101,33,18,4,75,42,1,82,58,69,11,16]
+    },
+    {
+      "operation" : "delete",
+      "parameter" : [82,1]
+    }
+  ]
+}

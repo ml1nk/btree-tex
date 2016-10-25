@@ -1,0 +1,30 @@
+{
+    "startup": [
+        "\\documentclass{standalone}",
+        "\\RequirePackage{tikz}",
+        "\\RequirePackage{ifthen}",
+        "\\usetikzlibrary{arrows,shapes,matrix}",
+        "\\tikzstyle{btreeptr} = [draw, semithick, fill=blue!50, minimum height=1cm, minimum width=0.5cm]",
+        "\\tikzstyle{btreeval} = [draw, semithick, fill=yellow!30, minimum size=1cm]",
+        "\\tikzstyle{btreevale} = [draw,semithick, fill=green!30, minimum size=1cm]",
+        "\\tikzstyle{btlink} = [draw, semithick, ->, >=triangle 45]",
+        "\\newcommand{\\xyshift}[3]{",
+        "  \\begin{scope}[xshift=#1, yshift=#2]",
+        "    #3",
+        "  \\end{scope}",
+        "}",
+        "\\newcommand{\\btreelink}[2]{",
+        "\\draw[btlink] (#1.south) -- ([yshift=-0.1cm] #2.north); \\&",
+        "\\fill ([yshift=0.5cm]  #1.south) circle[radius=0.15cm]; \\\\",
+        "}"
+    ],
+    "start": [
+        "\\begin{document}",
+        "\\begin{tikzpicture}",
+        "\\tikzstyle{every node}=[font=\\fontsize{15}{0}\\selectfont]"
+    ],
+    "end": [
+        "\\end{tikzpicture}",
+        "\\end{document}"
+    ]
+}

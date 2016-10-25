@@ -1,0 +1,23 @@
+{
+  "name": "btree-tex",
+  "version": "0.0.1",
+  "description": "",
+  "main": "api.js",
+  "author": "Marcel Link",
+  "license": "MIT",
+  "scripts": { "test" : "node ./examples.js" },
+  "dependencies": {
+    "commander": "^2.9.0"
+  },
+  "optionalDependencies": {
+    "latex": "^0.0.1",
+    "graphicsmagick-stream" : "^2.1.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ml1nk/btree-tex"
+  },
+  "bin":  {
+    "btree-tex" : "./index.js"
+  }
+}
