@@ -3,7 +3,7 @@
         "\\documentclass{standalone}",
         "\\RequirePackage{tikz}",
         "\\RequirePackage{ifthen}",
-        "\\usetikzlibrary{arrows,shapes,matrix}",
+        "\\usetikzlibrary{arrows,shapes}",
         "\\tikzstyle{btreeptr} = [draw, semithick, fill=blue!50, minimum height=1cm, minimum width=0.5cm]",
         "\\tikzstyle{btreeval} = [draw, semithick, fill=yellow!30, minimum size=1cm]",
         "\\tikzstyle{btreevale} = [draw,semithick, fill=green!30, minimum size=1cm]",

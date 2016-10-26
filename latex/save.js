@@ -7,6 +7,7 @@ module.exports = function(filename, latex, png) {
     .noProfile()
     .density(300,300)
     .transparent("white")
+    .trim()
     .write(filename+".png", function (err) {
       if (err) {
         throw new Exception(err);
