@@ -1,7 +1,7 @@
 module.exports = function(json, prefix, png) {
   var fullyOperational = true;
   try {
-      require.resolve("graphicsmagick-stream");
+      require.resolve("gm");
       require.resolve("latex");
   } catch(e) {
       fullyOperational = false;

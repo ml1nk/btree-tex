@@ -2,18 +2,15 @@ module.exports = function(filename, latex, png) {
   var fs = require('fs');
   fs.writeFile(filename+".tex",latex,function(){});
   if(png) {
-    var gm = require('graphicsmagick-stream');
-    var convert = gm({
-      pool: 10,
-      format: 'png',
-      page: 1,
-      rotate: 'auto',
-      density: 300,
-      split: false,
-      tar: false
+    var gm = require('gm');
+    gm(require("latex")(latex))
+    .noProfile()
+    .density(300,300)
+    .transparent("white")
+    .write(filename+".png", function (err) {
+      if (err) {
+        throw new Exception(err);
+      }
     });
-    require("latex")(latex)
-                    .pipe(convert({}))
-                    .pipe(fs.createWriteStream(filename+".png"));
   }
 };
