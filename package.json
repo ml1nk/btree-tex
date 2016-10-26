@@ -1,6 +1,6 @@
 {
-  "name": "btree-tex",
-  "version": "0.0.3",
+  "name": "tree-tex",
+  "version": "0.0.4",
   "description": "",
   "main": "api.js",
   "author": "Marcel Link",
@@ -15,9 +15,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ml1nk/btree-tex"
+    "url": "https://github.com/ml1nk/tree-tex"
   },
   "bin":  {
-    "btree-tex" : "./index.js"
+    "tree-tex" : "./index.js"
   }
 }
