@@ -1,6 +1,6 @@
 {
   "name": "btree-tex",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "api.js",
   "author": "Marcel Link",
@@ -10,7 +10,7 @@
     "commander": "^2.9.0"
   },
   "optionalDependencies": {
-    "latex": "^0.0.1",
+    "latex": "git://github.com/ml1nk/node-latex.git#95af5c8",
     "gm" : "^1.23.0 "
   },
   "repository": {
