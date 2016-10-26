@@ -42,10 +42,7 @@ class BTree {
       curLevel = nexLevel;
       nexLevel = [];
     }
-    return {
-      order : this.wurzel.ordnung,
-      data : output
-    };
+    return output;
   }
 }
 

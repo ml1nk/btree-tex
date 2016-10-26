@@ -79,6 +79,50 @@
  \node[btreevale] {#5}; \\
 };
 }
+\newcommand{\btreeinodee}[6]{
+\matrix [ampersand replacement=\&] (#1)
+{
+ \node[btreeptr] (#1-a) {\vphantom{1}}; \& \node[btreeval] {#2}; \&
+ \node[btreeptr] (#1-b) {\vphantom{1}}; \& \node[btreeval] {#3}; \&
+ \node[btreeptr] (#1-c) {\vphantom{1}}; \& \node[btreeval] {#4}; \&
+ \node[btreeptr] (#1-d) {\vphantom{1}}; \& \node[btreeval] {#5}; \&
+ \node[btreeptr] (#1-e) {\vphantom{1}}; \& \node[btreeval] {#6}; \&
+ \node[btreeptr] (#1-f) {\vphantom{1}}; \\
+};
+}
+\newcommand{\btreelnodee}[6]{
+\matrix [ampersand replacement=\&] (#1)
+{
+ \node[btreevale] {#2}; \&
+ \node[btreevale] {#3}; \&
+ \node[btreevale] {#4}; \&
+ \node[btreevale] {#5}; \&
+ \node[btreevale] {#6}; \\
+};
+}
+\newcommand{\btreeinodef}[7]{
+\matrix [ampersand replacement=\&] (#1)
+{
+ \node[btreeptr] (#1-a) {\vphantom{1}}; \& \node[btreeval] {#2}; \&
+ \node[btreeptr] (#1-b) {\vphantom{1}}; \& \node[btreeval] {#3}; \&
+ \node[btreeptr] (#1-c) {\vphantom{1}}; \& \node[btreeval] {#4}; \&
+ \node[btreeptr] (#1-d) {\vphantom{1}}; \& \node[btreeval] {#5}; \&
+ \node[btreeptr] (#1-e) {\vphantom{1}}; \& \node[btreeval] {#6}; \&
+ \node[btreeptr] (#1-f) {\vphantom{1}}; \& \node[btreeval] {#7}; \&
+ \node[btreeptr] (#1-g) {\vphantom{1}}; \\
+};
+}
+\newcommand{\btreelnodef}[7]{
+\matrix [ampersand replacement=\&] (#1)
+{
+ \node[btreevale] {#2}; \&
+ \node[btreevale] {#3}; \&
+ \node[btreevale] {#4}; \&
+ \node[btreevale] {#5}; \&
+ \node[btreevale] {#6}; \&
+ \node[btreevale] {#7}; \\
+};
+}
 
 \begin{document}
 \begin{tikzpicture}

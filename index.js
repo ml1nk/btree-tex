@@ -1,18 +1,25 @@
 #!/usr/bin/env node
+var path = require('path');
 var program = require('commander');
 
 program
   .version(require(require("path").join(__dirname,'package.json')).version)
-  .option('-i, --input [json]', '(required) json file for execution', String)
-  .option('-o, --output [prefix]', '(required) prefix for all generated files', String)
-  .option('-p, --png', 'generate .png in addition to .tex (optional dependencies required)')
+  .usage('[options] <input_json> <output_prefix>')
+  .option('-p, --png', 'generate .png in addition to .tex')
+  .option('-a, --all', 'create file(s) for every step if json contains instructions')
   .parse(process.argv);
 
-if(!program.input || !program.output) {
+if(program.args.length!=2) {
   program.outputHelp();
   process.exit(1);
 }
 
-var json = require(require("path").join(process.cwd(),program.input));
-var api = require(require("path").join(__dirname, "api.js"));
-api(json,program.output,program.png);
+try {
+  var json = require(path.join(process.cwd(),program.args[0]));
+} catch(e) {
+  console.error("input file not found");
+  process.exit(1);
+}
+
+var api = require(path.join(__dirname, "api.js"));
+api.generate(json,program.args[1],program.png,program.all);

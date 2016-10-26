@@ -43,42 +43,6 @@
  \node[btreevale] {#3}; \\
 };
 }
-\newcommand{\btreeinodec}[4]{
-\matrix [ampersand replacement=\&] (#1)
-{
- \node[btreeptr] (#1-a) {\vphantom{1}}; \& \node[btreeval] {#2}; \&
- \node[btreeptr] (#1-b) {\vphantom{1}}; \& \node[btreeval] {#3}; \&
- \node[btreeptr] (#1-c) {\vphantom{1}}; \& \node[btreeval] {#4}; \&
- \node[btreeptr] (#1-d) {\vphantom{1}}; \\
-};
-}
-\newcommand{\btreelnodec}[4]{
-\matrix [ampersand replacement=\&] (#1)
-{
- \node[btreevale] {#2}; \&
- \node[btreevale] {#3}; \&
- \node[btreevale] {#4}; \\
-};
-}
-\newcommand{\btreeinoded}[5]{
-\matrix [ampersand replacement=\&] (#1)
-{
- \node[btreeptr] (#1-a) {\vphantom{1}}; \& \node[btreeval] {#2}; \&
- \node[btreeptr] (#1-b) {\vphantom{1}}; \& \node[btreeval] {#3}; \&
- \node[btreeptr] (#1-c) {\vphantom{1}}; \& \node[btreeval] {#4}; \&
- \node[btreeptr] (#1-d) {\vphantom{1}}; \& \node[btreeval] {#5}; \&
- \node[btreeptr] (#1-e) {\vphantom{1}}; \\
-};
-}
-\newcommand{\btreelnoded}[5]{
-\matrix [ampersand replacement=\&] (#1)
-{
- \node[btreevale] {#2}; \&
- \node[btreevale] {#3}; \&
- \node[btreevale] {#4}; \&
- \node[btreevale] {#5}; \\
-};
-}
 
 \begin{document}
 \begin{tikzpicture}

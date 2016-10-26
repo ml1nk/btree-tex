@@ -1,28 +1,25 @@
 var id = require(require("path").join(__dirname, "id.js"));
 
-module.exports = function(btree) {
-  // Beispiel
-  /*
-  btree = {
-    "order" : 2,
-    "data" : [
-      [
-        [3]
-      ],
-      [
-        [1,2],[4,5]
-      ]
-    ]
-  };*/
-
+module.exports = function(tree) {
   var data = require("./data.json");
   var latex = data.startup.join("\n");
-  latex += "\n" + require("./order.js")(btree.order)  + "\n";
+  latex += "\n" + require("./order.js")(getOrder(tree))  + "\n";
   latex += data.start.join("\n")+"\n";
-  latex += gen(btree.data);
+  latex += gen(tree);
   latex += data.end.join("\n")+"\n";
   return latex;
 };
+
+function getOrder(data) {
+  var order = 1;
+  for(let i=0; i<data.length; i++) {
+    for(let p=0; p<data[i].length; p++) {
+      order = (data[i][p].length>order) ? data[i][p].length : order;
+    }
+  }
+  return order;
+}
+
 
 function gen(data) {
   var output = "";

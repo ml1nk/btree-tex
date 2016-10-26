@@ -1,38 +1,52 @@
-module.exports = function(json, prefix, png) {
-  var fullyOperational = true;
+var path = require("path");
+
+function generate(json, prefix, png, all) {
+  if(png && !pngReady()) {
+    throw new Exception("tree-tex: optional dependencies is required for png output");
+  }
+
+  var convert = require(path.join(__dirname, "latex", "convert.js"));
+  var save = require(path.join(__dirname, "latex", "save.js"));
+
+  if(Array.isArray(json)) {
+    save(prefix,convert(json),png);
+  } else {
+    let counter = 1;
+    var result = _execute(json, !all ? null : function(data, operation, parameter) {
+      save(prefix+"-"+counter+"-"+operation+"-"+parameter,convert(data),png);
+      counter++;
+    });
+    if(!all) {
+      save(prefix,result,png);
+    }
+  }
+}
+
+function pngReady() {
   try {
       require.resolve("gm");
       require.resolve("latex");
+      return true;
   } catch(e) {
-      fullyOperational = false;
+      return false;
   }
+}
 
-  if(!fullyOperational && png) {
-    console.error("optional dependencies is required for png output");
-    process.exit(1);
-  }
-
-  var BTree = require(require("path").join(__dirname, "btree", "BTree.js"));
-  var convert = require(require("path").join(__dirname, "latex", "convert.js"));
-  var save = require(require("path").join(__dirname, "latex", "save.js"));
-  var btree = new BTree(json.order);
-  var commandID = 1;
+function _execute(json, callback) {
+  var btree = new (require(path.join(__dirname, "btree", "BTree.js")))(json.order);
   for(var i=0; i<json.todo.length; i++) {
       var command = json.todo[i];
-      if(command.operation === "insert") {
-        for(let p=0; p<command.parameter.length; p++) {
-          btree.insert(command.parameter[p]);
-          save(prefix+"-"+commandID+"-insert-"+command.parameter[p],convert(btree.data()),png);
-          commandID++;
+      for(var p=0; p<command.parameter.length; p++) {
+        btree[command.operation](command.parameter[p]);
+        if(typeof callback === "function") {
+            callback(btree.data(),command.operation,command.parameter[p]);
         }
-      } else if(command.operation === "delete") {
-        for(let p=0; p<command.parameter.length; p++) {
-          btree.delete(command.parameter[p]);
-          save(prefix+"-"+commandID+"-delete-"+command.parameter[p],convert(btree.data()),png);
-          commandID++;
-        }
-      } else {
-        throw new Exception("unknown operation");
       }
   }
+  return (typeof callback === "function") ? true : btree.data();
+}
+
+module.exports = {
+  generate : generate,
+  pngReady : pngReady
 };
