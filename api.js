@@ -17,7 +17,7 @@ function generate(json, prefix, png, all) {
       counter++;
     });
     if(!all) {
-      save(prefix,result,png);
+      save(prefix,convert(result),png);
     }
   }
 }
