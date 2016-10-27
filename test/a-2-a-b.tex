@@ -21,36 +21,28 @@
  \node[btreeptr] (#1-b) {\vphantom{1}}; \\
 };
 }
-\newcommand{\btreenodeb}[3]{
-\matrix [ampersand replacement=\&] (#1)
-{
- \node[btreeptr] (#1-a) {\vphantom{1}}; \& \node[btreeval] {#2}; \&
- \node[btreeptr] (#1-b) {\vphantom{1}}; \& \node[btreeval] {#3}; \&
- \node[btreeptr] (#1-c) {\vphantom{1}}; \\
-};
-}
 
 \begin{document}
 \begin{tikzpicture}
 \tikzstyle{every node}=[font=\fontsize{15}{0}\selectfont]
-\xyshift{12.5mm}{-60mm}{\btreenodea{c}{1}}
-\xyshift{37.5mm}{-60mm}{\btreenodea{e}{2}}
-\xyshift{62.5mm}{-60mm}{\btreenodea{g}{1}}
-\xyshift{87.5mm}{-60mm}{\btreenodea{i}{2}}
-\xyshift{112.5mm}{-60mm}{\btreenodea{ba}{2}}
-\xyshift{25mm}{-30mm}{\btreenodea{b}{4}}
-\xyshift{75mm}{-30mm}{\btreenodea{f}{2}}
-\xyshift{112.5mm}{-30mm}{\btreenodeb{j}{1}{5}}
-\xyshift{62.5mm}{0mm}{\btreenodeb{a}{3}{2}}
+\xyshift{37.5mm}{-90mm}{\btreenodea{j}{A}}
+\xyshift{52.5mm}{-90mm}{\btreenodea{bc}{C}}
+\xyshift{7.5mm}{-60mm}{\btreenodea{c}{A}}
+\xyshift{22.5mm}{-60mm}{\btreenodea{f}{C}}
+\xyshift{37.5mm}{-60mm}{\btreenodea{i}{-}}
+\xyshift{52.5mm}{-60mm}{\btreenodea{bb}{-}}
+\xyshift{15mm}{-30mm}{\btreenodea{b}{\textasciicircum{}}}
+\xyshift{45mm}{-30mm}{\btreenodea{h}{\textasciicircum{}}}
+\xyshift{30mm}{0mm}{\btreenodea{a}{v}}
 
 
+\btreelink{i-b}{j}
+\btreelink{bb-b}{bc}
 \btreelink{b-a}{c}
-\btreelink{b-b}{e}
-\btreelink{f-a}{g}
-\btreelink{f-b}{i}
-\btreelink{j-c}{ba}
+\btreelink{b-b}{f}
+\btreelink{h-a}{i}
+\btreelink{h-b}{bb}
 \btreelink{a-a}{b}
-\btreelink{a-b}{f}
-\btreelink{a-c}{j}
+\btreelink{a-b}{h}
 \end{tikzpicture}
 \end{document}

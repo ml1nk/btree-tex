@@ -39,29 +39,34 @@ function _execute(json, callback) {
   var node = require(path.join(__dirname, "tree", "node.js"));
 
 
-  tree.root.insertLeft(0,2,new node(tree.root.logic, [null,null],[2]));
-  tree.root.insertLeft(0,3,new node(tree.root.logic, [null,null],[4]));
-  tree.root.setSub(2,new node(tree.root.logic, [null,null],[5]));
+  tree.root.insertLeft(0,2,new node(tree.root.logic, [2],[null,null]));
+  tree.root.insertLeft(0,3,new node(tree.root.logic, [4],[null,null]));
+  tree.root.setSub(2,new node(tree.root.logic, [5], [null,null]));
 
-  tree.root.subs[0].setSub(0,new node(tree.root.logic, [null,null],[1]));
-  tree.root.subs[0].setSub(1,new node(tree.root.logic, [null,null],[2]));
-
-
-  tree.root.subs[1].setSub(0,new node(tree.root.logic, [null,null],[1]));
-  tree.root.subs[1].setSub(1,new node(tree.root.logic, [null,null],[2]));
+  tree.root.subs[0].setSub(0,new node(tree.root.logic, [1],[null,null]));
+  tree.root.subs[0].setSub(1,new node(tree.root.logic, [2],[null,null]));
 
 
-  tree.root.subs[2].setSub(0,new node(tree.root.logic, [null,null],[1]));
-  tree.root.subs[2].setSub(1,new node(tree.root.logic, [null,null],[2]));
+  tree.root.subs[1].setSub(0,new node(tree.root.logic, [1], [null,null]));
+  tree.root.subs[1].setSub(1,new node(tree.root.logic, [2], [null,null]));
 
 
-  tree.root.subs[0].merge(0);
-  tree.root.subs[1].merge(0);
-  tree.root.subs[2].merge(0);
+  tree.root.subs[2].setSub(0,new node(tree.root.logic, [1],[null,null]));
+  tree.root.subs[2].setSub(1,new node(tree.root.logic, [2],[null,null]));
 
-  //tree.root.subs[2].moveUpLeft(0);
 
-  //tree.root.setSub(2,new node(tree.root.logic, [null,null],[11]));
+  tree.root.subs[2].moveDownLeft(0);
+
+
+  //tree.root.subs[0].merge(0);
+  //tree.root.subs[1].merge(0);
+  //tree.root.subs[2].merge(0);
+
+  //tree.root.subs[2].moveUpLeft();
+  //tree.root.subs[0].moveUpRight();
+  //tree.root.subs[1].moveUpRight();
+
+  //tree.root.setSub(2,new node(tree.root.logic, [11], [null,null]));
 
 
 
@@ -69,6 +74,17 @@ function _execute(json, callback) {
 
   callback(tree.data(),"a","b");
 
+  callback([
+                [
+                  [null,"A",null],"^",[null,"C",null]
+                ],
+                "v",
+                [
+                  [null,"-",[null,"A",null]],
+                "^",
+                  [null,"-",[null,"C",null]]
+                ]
+           ],"a","b");
   /*
   var btree = new (require(path.join(__dirname, "btree", "BTree.js")))(json.order);
   for(var i=0; i<json.todo.length; i++) {

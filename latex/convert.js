@@ -1,122 +1,125 @@
 var path = require("path");
+var escape = require("escape-latex");
 var commands = require(path.join(__dirname, "commands.js"));
 var data = require(path.join(__dirname, "data.json"));
 var id = require(path.join(__dirname, "id.js"));
 
 module.exports = function(tree) {
   var latex = data.startup.join("\n");
-
-  var [degree, level] = getDegreeLevel(tree);
-
-  latex += "\n" + commands(degree)  + "\n";
+  let output = analyse(tree);
+  //console.log(JSON.stringify(tree, null, 4));
+  latex += "\n" + commands(output.degree)  + "\n";
   latex += data.start.join("\n")+"\n";
-  latex += generate(tree, degree, level);
+  latex += draw(output);
   latex += data.end.join("\n")+"\n";
   return latex;
 };
 
-function positions(degree, level) {
-  return Math.pow(degree+1, level);
-}
+function analyse(tree) {
+  var output = [];
+  var level = -1;
+  output.push([_analyse_separate(tree)]);
+  var degree = 0;
+  let newLevel = true;
 
-function pos(diff, degree, level, i) {
-  return (i*degree*10+5) + diff;
-}
-
-function getDegreeLevel(tree) {
-  var [degree, level] = _getDegreeLevel(tree);
-  level--;
-  return [degree, level];
-
-  function _getDegreeLevel(curTree) {
-    let degree = Math.floor(curTree.length/2);
-    let level = 1;
-    for(let i=0; i<curTree.length; i+=2) {
-      if(curTree[i]===null) {
+  while(newLevel) {
+    level++;
+    newLevel = false;
+    for(let i=0; i<output.length; i++) {
+      let newSub = false;
+      if(output[i].length!==level+1) {
         continue;
       }
-      let [subDegree, subLevel] = _getDegreeLevel(curTree[i]);
-      if(subDegree>degree) {
-        degree = subDegree;
-      }
-      if(level < subLevel+1) {
-        level = subLevel+1;
+      let cur = output[i][level];
+      let base = output[i].slice(0);
+      let myDegree = cur.keys.length;
+      degree = (degree<myDegree) ? myDegree : degree;
+      for(let p=0; p<cur.subs.length; p++) {
+        if(cur.subs[p] === null) {
+          continue;
+        }
+        if(!newSub) {
+          output[i].push(_analyse_separate(cur.subs[p]));
+          newSub = true;
+        }else {
+          let newOutput = base.slice(0);
+          newOutput.push(_analyse_separate(cur.subs[p]));
+          output.splice(i+1, 0, newOutput);
+          i++;
+        }
+        newLevel = true;
       }
     }
-    return [degree, level];
   }
+
+  return {
+    degree : degree,
+    level : level,
+    output : output
+  };
 }
 
-
-
-function generate(tree, degree, level) {
-  var onePositionWidth = (degree*10+5);
-  var maxPositions = positions(degree, level);
-  var maxWidth = maxPositions * onePositionWidth;
-
-  console.log(onePositionWidth,maxPositions,maxWidth,degree, level);
-
-  return _generate(0,0,tree);
-  function _generate(curLevel, curPos, me) {
-    var output = "";
-    let leaf = true;
-    for(let i=0; i<me.length; i+=2) {
-      if(me[i] === null) {
-        continue;
-      }
-      leaf = false;
-      output += _generate(curLevel+1, curPos*degree+(i/2), me[i]);
-    }
-
-
-    console.log("a",(maxPositions/positions(degree, curLevel)));
-    output += elBox(onePositionWidth*(maxPositions/positions(degree, curLevel))*(curPos+0.5),-curLevel*30, id(curLevel)+"-"+id(curPos), me.filter(function(value, key){
+function _analyse_separate(node) {
+  return {
+    keys : node.filter(function(value, key){
       return (key+1)%2===0;
-    }), leaf);
-
-    return output;
-  }
-
+    }),
+    subs : node.filter(function(value, key){
+      return key%2===0;
+    })
+  };
 }
 
-
-function gen(data,level) {
-  var output = "";
-  data = data.reverse();
-  var elID = 0;
-  var linkID = 0;
-  var subPos = [];
-  for(var line=0; line<data.length; line++) {
-    var pos = 0;
-    var lastfix = 0;
-    for(var sub=0; sub<data[line].length; sub++) {
-      var el = data[line][sub];
-      if(line===0) {
-        pos += el.length*5+5 + lastfix;
-        lastfix = el.length*5+5;
-      } else {
-        var mySubPos = subPos.splice(0,el.length+1);
-        pos = mySubPos[0]+(mySubPos[mySubPos.length-1]-mySubPos[0])/2;
-      }
-      output += elBox(pos,30*line, elID, el, line===0)+"\n";
-      // Verknüpfungen ergänzen
-      if(line!==0) {
-          for(let i=0; i<=el.length;i++) {
-            output += elLink(elID,i,linkID)+"\n";
-            linkID++;
-          }
-      }
-      elID++;
-      subPos.push(pos);
+function draw(data) {
+  let output = "";
+  let links = "";
+  for(let p=data.level;p>=0; p--) {
+    let position = 0;
+    for(let i=0;i<data.output.length; i++) {
+        if(p>=data.output[i].length || data.output[i][p].hasOwnProperty("width")) {
+          position+=data.output[i].length>p ? 0 : 1;
+          continue;
+        }
+        data.output[i][p].width = 1;
+        if(data.output[i].length-1!==p) {
+          let [link, width] = _calc_linkWidth(data.output, i, p, data.level);
+          data.output[i][p].width = width;
+          links += link;
+        }
+        let myPos = position + (data.output[i][p].width)/2;
+        position+=data.output[i][p].width;
+        output += elBox(myPos*(data.degree*10+5),-p*30, i*data.level+p, data.output[i][p].keys, true);
     }
   }
-  return output;
+  return output+"\n\n"+links;
+}
+
+function _calc_linkWidth(output, i, p, level) {
+  var subs = 0;
+  var subsPos = [];
+  for(let q=0; q<output[i][p].subs.length; q++) {
+    if(output[i][p].subs[q] !== null) {
+      subs++;
+      subsPos.push(q);
+    }
+  }
+  width = 0;
+  link = "";
+  var pos = i;
+  for(let q=i; q<i+subs; q++) {
+    width += output[pos][p+1].width;
+    link += elLink(p+i*level,subsPos[q-i],p+1+pos*level);
+    pos += output[pos][p+1].width;
+  }
+  return [link,  width];
 }
 
 function elBox(x,y, elID, el, leaf) {
-  return "\\xyshift{"+x+"mm}{"+y+"mm}{\\btree"+(leaf ? "l" : "i")+"node"+id(el.length-1)+"{"+id(elID)+"}{"+el.join("}{")+"}}";
+  return "\\xyshift{"+x+"mm}{"+y+"mm}{\\btreenode"+id(el.length-1)+"{"+id(elID)+"}{"+el.map(function(value){
+    return escape(value);
+  }).join("}{")+"}}\n";
 }
 
 function elLink(node,nodePos,subnode) {
-  return "\\btreelink{"+id(node)+"-"+id(nodePos)+"}{"+id(subnode)+"}";
+  return "\\btreelink{"+id(node)+"-"+id(nodePos)+"}{"+id(subnode)+"}\n";
 }

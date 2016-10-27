@@ -3,7 +3,7 @@ var node = require(path.join(__dirname, "node.js"));
 
 class tree {
   constructor() {
-    this.root = new node({},[null],[]);
+    this.root = new node({},[], [null]);
   }
 
   /*

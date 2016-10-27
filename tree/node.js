@@ -4,7 +4,7 @@
 
 class node {
 
-  constructor(logic, subs, keys) {
+  constructor(logic, keys, subs) {
     this.logic = logic;
     this.keys = keys;
     this.subs = subs;
@@ -43,13 +43,15 @@ class node {
   }
 
   deleteRight(pos) {
-    return this._delete(pos,0);
+    return this._delete(pos,1);
   }
 
   _delete(pos, shift) {
-    var key = this.keys.splice(pos,1);
-    var sub = this.subs.splice(pos+shift,1);
-    sub.supra = null;
+    var key = this.keys.splice(pos,1)[0];
+    var sub = this.subs.splice(pos+shift,1)[0];
+    if(sub.supra !== null) {
+      sub.supra = null;
+    }
     return {
       key : key,
       sub : sub
@@ -102,23 +104,58 @@ class node {
     let newSupra = false;
     if(this.supra === null) {
       newSupra = true;
-      this.supra = new node(this.logic,[null], []);
+      this.supra = new node(this.logic,[], [null]);
     }
 
     let sub = this.subs.splice(left ? 0 : this.keys.length,1)[0];
+    let key = this.keys.splice(left ? 0 : this.keys.length-1,1)[0];
+
     if(sub!==null) {
       sub.supra = this.supra;
     }
     let me = this.supra.getPos(this);
-
-    this.supra[left ? "insertLeft" : "insertRight"](me,this.keys.splice(left ? 0 : this.keys.length-1,1)[0],sub);
+    this.supra[left ? "insertLeft" : "insertRight"](me,key,sub);
 
     if(this.keys.length === 0) {
-      this.setSub(me, this.subs[0]);
+      this.supra.setSub(me + (left ? 1 : 0), this.subs[0]);
       this.supra = null;
     }
-
     return newSupra ? this.supra : true;
+  }
+
+  moveDownLeft(pos) {
+    return this._moveDown(pos,true);
+  }
+
+  moveDownRight(pos) {
+    return this._moveDown(pos,true);
+  }
+
+  _moveDown(pos,left) {
+    if(pos>=this.keys.length) {
+      return false;
+    }
+    let deleted = this[left ? "deleteRight" : "deleteLeft"](pos);
+
+    if(this.subs[pos] === null) {
+      this.subs[pos] = new node(this, [], [null]);
+    }
+
+    this.subs[pos][left ? "insertRight" : "insertLeft"](left ? this.subs[pos].subs.length : 0, deleted.key, deleted.sub);
+
+    if(this.keys.length === 0) {
+      this.subs[0].supra = this.supra;
+      this.supra = null;
+      if(this.subs[0].supra !== null) {
+        this.subs[0].supra.setSub(this.subs[0].supra.getPos(this), this.subs[0]);
+      } else {
+        return this.subs[0];
+      }
+    }
+
+
+
+    return true;
   }
 
   merge(pos) {
@@ -147,7 +184,8 @@ class node {
     } else {
       subs.push(null);
     }
-    var merged = new node(this.logic, subs, keys);
+
+    var merged = width(this.logic, subs, keys);
     if(this.keys.length > 0) {
       merged.supra = this;
       this.subs.splice(pos,0,merged);
