@@ -1,3 +1,6 @@
+// node index.js examples/a.json test/a -a -p
+
+
 var path = require("path");
 var api = require(path.join(__dirname, "api.js"));
 

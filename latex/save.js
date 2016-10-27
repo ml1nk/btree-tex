@@ -1,6 +1,12 @@
 module.exports = function(filename, latex, png) {
   var fs = require('fs');
-  fs.writeFile(filename+".tex",latex,function(){});
+  fs.writeFile(filename+".tex",latex,function(err){
+    if (err) {
+      throw new Error(err);
+    } else {
+      console.log("tex written: "+filename+".tex");
+    }
+  });
   if(png) {
     var gm = require('gm');
     gm(require("latex").create(latex))
@@ -10,7 +16,9 @@ module.exports = function(filename, latex, png) {
     .trim()
     .write(filename+".png", function (err) {
       if (err) {
-        throw new Exception(err);
+        throw new Error(err);
+      } else {
+        console.log("png written: "+filename+".png");
       }
     });
   }

@@ -1,7 +1,7 @@
-module.exports = function(order) {
+module.exports = function(degree) {
   var id = require(require("path").join(__dirname, "id.js"));
   var output = "";
-  for(let i = 0; i<order*2; i++) {
+  for(let i = 0; i<degree; i++) {
     let key = id(i);
     output +=
               "\\newcommand{\\btreeinode"+key+"}["+(i+2)+"]{" + "\n" +

@@ -60,33 +60,9 @@
  \node[btreevale] {#4}; \\
 };
 }
-\newcommand{\btreeinoded}[5]{
-\matrix [ampersand replacement=\&] (#1)
-{
- \node[btreeptr] (#1-a) {\vphantom{1}}; \& \node[btreeval] {#2}; \&
- \node[btreeptr] (#1-b) {\vphantom{1}}; \& \node[btreeval] {#3}; \&
- \node[btreeptr] (#1-c) {\vphantom{1}}; \& \node[btreeval] {#4}; \&
- \node[btreeptr] (#1-d) {\vphantom{1}}; \& \node[btreeval] {#5}; \&
- \node[btreeptr] (#1-e) {\vphantom{1}}; \\
-};
-}
-\newcommand{\btreelnoded}[5]{
-\matrix [ampersand replacement=\&] (#1)
-{
- \node[btreevale] {#2}; \&
- \node[btreevale] {#3}; \&
- \node[btreevale] {#4}; \&
- \node[btreevale] {#5}; \\
-};
-}
 
 \begin{document}
 \begin{tikzpicture}
 \tikzstyle{every node}=[font=\fontsize{15}{0}\selectfont]
-\xyshift{15mm}{0mm}{\btreelnodeb{a}{5}{19}}
-\xyshift{45mm}{0mm}{\btreelnodeb{b}{50}{102}}
-\xyshift{30mm}{30mm}{\btreeinodea{c}{34}}
-\btreelink{c-a}{a}
-\btreelink{c-b}{b}
-\end{tikzpicture}
+\xyshift{17.5mm}{-30mm}{\btreelnodec{}{1}{4}{2}}\xyshift{52.5mm}{-30mm}{\btreelnodec{}{1}{2}{2}}\xyshift{87.5mm}{-30mm}{\btreelnodec{}{1}{5}{2}}\xyshift{70mm}{0mm}{\btreeinodeb{}{3}{2}}\end{tikzpicture}
 \end{document}
