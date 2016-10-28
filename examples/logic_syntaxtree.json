@@ -1,0 +1,12 @@
+[
+    [
+        [null, "A", null],
+        "^",
+        [null, "C", null]
+    ],
+    "v", [
+        [null, "-", [null, "A", null]],
+        "^",
+        [null, "-", [null, "C", null]]
+    ]
+]

@@ -2,10 +2,9 @@
 \RequirePackage{tikz}
 \RequirePackage{ifthen}
 \usetikzlibrary{arrows,shapes}
-\tikzstyle{btreeptr} = [draw, semithick, fill=blue!50, minimum height=1cm, minimum width=0.5cm]
+\tikzstyle{btreeptr} = [draw, ultra thin, fill=blue!50, minimum height=1cm, inner sep=0cm, minimum width=0cm]
 \tikzstyle{btreeval} = [draw, semithick, fill=yellow!30, minimum size=1cm]
-\tikzstyle{btreevale} = [draw,semithick, fill=green!30, minimum size=1cm]
-\tikzstyle{btlink} = [draw, semithick, ->, >=triangle 45]
+\tikzstyle{btlink} = [draw, thick, ->, >=triangle 45]
 \newcommand{\xyshift}[3]{
   \begin{scope}[xshift=#1, yshift=#2]
     #3
@@ -13,22 +12,16 @@
 }
 \newcommand{\btreelink}[2]{
 \draw[btlink] (#1.south) -- ([yshift=-0.1cm] #2.north); \&
-\fill ([yshift=0.5cm]  #1.south) circle[radius=0.15cm]; \\
+\fill (#1.south) circle[radius=0.15cm]; \\
 }
-\newcommand{\btreeinodea}[2]{
+\newcommand{\btreenodea}[2]{
 \matrix [ampersand replacement=\&] (#1)
 {
  \node[btreeptr] (#1-a) {\vphantom{1}}; \& \node[btreeval] {#2}; \&
  \node[btreeptr] (#1-b) {\vphantom{1}}; \\
 };
 }
-\newcommand{\btreelnodea}[2]{
-\matrix [ampersand replacement=\&] (#1)
-{
- \node[btreevale] {#2}; \\
-};
-}
-\newcommand{\btreeinodeb}[3]{
+\newcommand{\btreenodeb}[3]{
 \matrix [ampersand replacement=\&] (#1)
 {
  \node[btreeptr] (#1-a) {\vphantom{1}}; \& \node[btreeval] {#2}; \&
@@ -36,14 +29,7 @@
  \node[btreeptr] (#1-c) {\vphantom{1}}; \\
 };
 }
-\newcommand{\btreelnodeb}[3]{
-\matrix [ampersand replacement=\&] (#1)
-{
- \node[btreevale] {#2}; \&
- \node[btreevale] {#3}; \\
-};
-}
-\newcommand{\btreeinodec}[4]{
+\newcommand{\btreenodec}[4]{
 \matrix [ampersand replacement=\&] (#1)
 {
  \node[btreeptr] (#1-a) {\vphantom{1}}; \& \node[btreeval] {#2}; \&
@@ -52,87 +38,18 @@
  \node[btreeptr] (#1-d) {\vphantom{1}}; \\
 };
 }
-\newcommand{\btreelnodec}[4]{
-\matrix [ampersand replacement=\&] (#1)
-{
- \node[btreevale] {#2}; \&
- \node[btreevale] {#3}; \&
- \node[btreevale] {#4}; \\
-};
-}
-\newcommand{\btreeinoded}[5]{
-\matrix [ampersand replacement=\&] (#1)
-{
- \node[btreeptr] (#1-a) {\vphantom{1}}; \& \node[btreeval] {#2}; \&
- \node[btreeptr] (#1-b) {\vphantom{1}}; \& \node[btreeval] {#3}; \&
- \node[btreeptr] (#1-c) {\vphantom{1}}; \& \node[btreeval] {#4}; \&
- \node[btreeptr] (#1-d) {\vphantom{1}}; \& \node[btreeval] {#5}; \&
- \node[btreeptr] (#1-e) {\vphantom{1}}; \\
-};
-}
-\newcommand{\btreelnoded}[5]{
-\matrix [ampersand replacement=\&] (#1)
-{
- \node[btreevale] {#2}; \&
- \node[btreevale] {#3}; \&
- \node[btreevale] {#4}; \&
- \node[btreevale] {#5}; \\
-};
-}
-\newcommand{\btreeinodee}[6]{
-\matrix [ampersand replacement=\&] (#1)
-{
- \node[btreeptr] (#1-a) {\vphantom{1}}; \& \node[btreeval] {#2}; \&
- \node[btreeptr] (#1-b) {\vphantom{1}}; \& \node[btreeval] {#3}; \&
- \node[btreeptr] (#1-c) {\vphantom{1}}; \& \node[btreeval] {#4}; \&
- \node[btreeptr] (#1-d) {\vphantom{1}}; \& \node[btreeval] {#5}; \&
- \node[btreeptr] (#1-e) {\vphantom{1}}; \& \node[btreeval] {#6}; \&
- \node[btreeptr] (#1-f) {\vphantom{1}}; \\
-};
-}
-\newcommand{\btreelnodee}[6]{
-\matrix [ampersand replacement=\&] (#1)
-{
- \node[btreevale] {#2}; \&
- \node[btreevale] {#3}; \&
- \node[btreevale] {#4}; \&
- \node[btreevale] {#5}; \&
- \node[btreevale] {#6}; \\
-};
-}
-\newcommand{\btreeinodef}[7]{
-\matrix [ampersand replacement=\&] (#1)
-{
- \node[btreeptr] (#1-a) {\vphantom{1}}; \& \node[btreeval] {#2}; \&
- \node[btreeptr] (#1-b) {\vphantom{1}}; \& \node[btreeval] {#3}; \&
- \node[btreeptr] (#1-c) {\vphantom{1}}; \& \node[btreeval] {#4}; \&
- \node[btreeptr] (#1-d) {\vphantom{1}}; \& \node[btreeval] {#5}; \&
- \node[btreeptr] (#1-e) {\vphantom{1}}; \& \node[btreeval] {#6}; \&
- \node[btreeptr] (#1-f) {\vphantom{1}}; \& \node[btreeval] {#7}; \&
- \node[btreeptr] (#1-g) {\vphantom{1}}; \\
-};
-}
-\newcommand{\btreelnodef}[7]{
-\matrix [ampersand replacement=\&] (#1)
-{
- \node[btreevale] {#2}; \&
- \node[btreevale] {#3}; \&
- \node[btreevale] {#4}; \&
- \node[btreevale] {#5}; \&
- \node[btreevale] {#6}; \&
- \node[btreevale] {#7}; \\
-};
-}
 
 \begin{document}
 \begin{tikzpicture}
 \tikzstyle{every node}=[font=\fontsize{15}{0}\selectfont]
-\xyshift{20mm}{0mm}{\btreelnodec{a}{2}{5}{19}}
-\xyshift{60mm}{0mm}{\btreelnodec{b}{42}{50}{59}}
-\xyshift{95mm}{0mm}{\btreelnodeb{c}{83}{102}}
-\xyshift{57.5mm}{30mm}{\btreeinodeb{d}{34}{76}}
-\btreelink{d-a}{a}
-\btreelink{d-b}{b}
-\btreelink{d-c}{c}
+\xyshift{17.5mm}{-30mm}{\btreenodec{b}{2}{5}{19}}
+\xyshift{52.5mm}{-30mm}{\btreenodec{c}{42}{50}{59}}
+\xyshift{87.5mm}{-30mm}{\btreenodeb{d}{83}{102}}
+\xyshift{52.5mm}{0mm}{\btreenodeb{a}{34}{76}}
+
+
+\btreelink{a-a}{b}
+\btreelink{a-b}{c}
+\btreelink{a-c}{d}
 \end{tikzpicture}
 \end{document}

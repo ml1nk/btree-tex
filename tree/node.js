@@ -49,7 +49,7 @@ class node {
   _delete(pos, shift) {
     var key = this.keys.splice(pos,1)[0];
     var sub = this.subs.splice(pos+shift,1)[0];
-    if(sub.supra !== null) {
+    if(sub !== null) {
       sub.supra = null;
     }
     return {
@@ -104,7 +104,7 @@ class node {
     let newSupra = false;
     if(this.supra === null) {
       newSupra = true;
-      this.supra = new node(this.logic,[], [null]);
+      this.supra = new node(this.logic,[], [this]);
     }
 
     let sub = this.subs.splice(left ? 0 : this.keys.length,1)[0];
@@ -113,7 +113,8 @@ class node {
     if(sub!==null) {
       sub.supra = this.supra;
     }
-    let me = this.supra.getPos(this);
+    let me = newSupra ? 0 : this.supra.getPos(this);
+
     this.supra[left ? "insertLeft" : "insertRight"](me,key,sub);
 
     if(this.keys.length === 0) {
@@ -128,22 +129,25 @@ class node {
   }
 
   moveDownRight(pos) {
-    return this._moveDown(pos,true);
+    return this._moveDown(pos,false);
   }
 
   _moveDown(pos,left) {
     if(pos>=this.keys.length) {
       return false;
     }
+
     let deleted = this[left ? "deleteRight" : "deleteLeft"](pos);
 
     if(this.subs[pos] === null) {
-      this.subs[pos] = new node(this, [], [null]);
+      this.subs[pos] = new node(this.logic, [], [null]);
+      this.subs[pos].supra = this;
     }
 
     this.subs[pos][left ? "insertRight" : "insertLeft"](left ? this.subs[pos].subs.length : 0, deleted.key, deleted.sub);
 
     if(this.keys.length === 0) {
+      //console.log("\ntest\n");
       this.subs[0].supra = this.supra;
       this.supra = null;
       if(this.subs[0].supra !== null) {
@@ -152,20 +156,48 @@ class node {
         return this.subs[0];
       }
     }
-
-
-
     return true;
   }
+
+  moveRight(pos) {
+    if(pos>=this.keys.length || this.subs[pos] === null) {
+      return false;
+    }
+    let left = this.subs[pos];
+    left.moveUpRight();
+    this.moveDownRight(pos+1);
+    return true;
+  }
+
+  moveLeft(pos) {
+    if(pos>=this.keys.length || this.subs[pos+1] === null) {
+      return false;
+    }
+    let right = this.subs[pos+1];
+    right.moveUpLeft();
+    this.moveDownLeft(pos);
+    return true;
+  }
+
+  /*
+  merge(pos) {
+    if(pos>=this.keys.length) {
+      return false;
+    }
+    let left = this.subs[pos];
+    var move = (left !== null ? left.keys.length : 0);
+    for(let i=0;i<=move;i++) {
+      this.moveRight(pos);
+    }
+    return this.moveDownRight(pos);
+  }*/
 
   merge(pos) {
     if(pos>=this.keys.length) {
       return false;
     }
-
     let key = this.keys.splice(pos,1)[0];
     let [left, right] = this.subs.splice(pos,2);
-
     let keys = [key];
     let subs = [];
 
@@ -185,7 +217,7 @@ class node {
       subs.push(null);
     }
 
-    var merged = width(this.logic, subs, keys);
+    var merged = new node(this.logic, keys, subs);
     if(this.keys.length > 0) {
       merged.supra = this;
       this.subs.splice(pos,0,merged);
@@ -211,13 +243,23 @@ class node {
 
     // Randbedingung ()
     if(pos === 0) {
-      let sub = this.subs.splice(pos,1)[0];
-      sub.supra = this.supra;
-      this.insertRight(this.supra.getPos(this),this.keys.splice(pos,1)[0],sub);
+      return this.moveUpLeft();
     } else if(pos === this.keys.length-1){
-      let sub = this.subs.splice(pos+1,1);
-      sub.supra = this.supra;
-      this.insertRight(this.supra.getPos(this),this.keys.splice(pos,1)[0],sub);
+      return this.moveUpRight();
+    } else {
+      let keys = this.keys.splice(0,pos);
+      let subs= this.subs.splice(0,pos+1);
+      let split = new node(this.logic, keys, subs);
+      this.subs.unshift(null);
+      let result = this.moveUpLeft();
+
+      //console.log("a",result);
+
+      split.supra = this.supra;
+      this.supra.setSub(this.supra.getPos(this)-1, split);
+
+      //console.log(this.supra);
+      return result;
     }
 
   }

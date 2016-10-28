@@ -1,5 +1,10 @@
 {
-  "order" : 2,
+  "logic" : {
+    "type" : "btree",
+    "options" : {
+      "degree" : 4
+    }
+  },
   "todo" : [
     {
       "operation" : "insert",

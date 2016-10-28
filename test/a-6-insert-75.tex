@@ -29,28 +29,25 @@
  \node[btreeptr] (#1-c) {\vphantom{1}}; \\
 };
 }
+\newcommand{\btreenodec}[4]{
+\matrix [ampersand replacement=\&] (#1)
+{
+ \node[btreeptr] (#1-a) {\vphantom{1}}; \& \node[btreeval] {#2}; \&
+ \node[btreeptr] (#1-b) {\vphantom{1}}; \& \node[btreeval] {#3}; \&
+ \node[btreeptr] (#1-c) {\vphantom{1}}; \& \node[btreeval] {#4}; \&
+ \node[btreeptr] (#1-d) {\vphantom{1}}; \\
+};
+}
 
 \begin{document}
 \begin{tikzpicture}
 \tikzstyle{every node}=[font=\fontsize{15}{0}\selectfont]
-\xyshift{12.5mm}{-60mm}{\btreenodea{c}{1}}
-\xyshift{37.5mm}{-60mm}{\btreenodea{e}{2}}
-\xyshift{62.5mm}{-60mm}{\btreenodea{g}{1}}
-\xyshift{87.5mm}{-60mm}{\btreenodea{i}{2}}
-\xyshift{112.5mm}{-60mm}{\btreenodea{ba}{2}}
-\xyshift{25mm}{-30mm}{\btreenodea{b}{4}}
-\xyshift{75mm}{-30mm}{\btreenodea{f}{2}}
-\xyshift{112.5mm}{-30mm}{\btreenodeb{j}{1}{5}}
-\xyshift{62.5mm}{0mm}{\btreenodeb{a}{3}{2}}
+\xyshift{17.5mm}{-30mm}{\btreenodeb{b}{undefined}{undefined}}
+\xyshift{52.5mm}{-30mm}{\btreenodec{c}{49}{undefined}{101}}
+\xyshift{35mm}{0mm}{\btreenodea{a}{undefined}}
 
 
-\btreelink{b-a}{c}
-\btreelink{b-b}{e}
-\btreelink{f-a}{g}
-\btreelink{f-b}{i}
-\btreelink{j-c}{ba}
 \btreelink{a-a}{b}
-\btreelink{a-b}{f}
-\btreelink{a-c}{j}
+\btreelink{a-b}{c}
 \end{tikzpicture}
 \end{document}
