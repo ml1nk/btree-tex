@@ -60,14 +60,29 @@ function analyse(tree) {
 }
 
 function _analyse_separate(node) {
+  let keys = [];
+  let subs = [];
+  for(let i=0; i<node.length; i++) {
+    if(_analyse_is_key(node[i])) {
+      subs.push(null);
+      keys.push(node[i]);
+    } else {
+      subs.push(node[i]);
+      if(i==node.length-1) {
+        break;
+      }
+      keys.push(node[i+1]);
+      i++;
+    }
+  }
   return {
-    keys : node.filter(function(value, key){
-      return (key+1)%2===0;
-    }),
-    subs : node.filter(function(value, key){
-      return key%2===0;
-    })
+    keys : keys,
+    subs : subs
   };
+}
+
+function _analyse_is_key(node) {
+  return node !== null && typeof node !== "object";
 }
 
 function draw(data) {

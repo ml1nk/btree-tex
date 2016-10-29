@@ -1,0 +1,16 @@
+{
+  "logic" : {
+    "type" : "btree",
+    "options" : {
+      "degree" : 4,
+      "plus" : true,
+      "leftOrientation" : true
+    }
+  },
+  "todo" : [
+    {
+      "operation" : "insert",
+      "parameter" : ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q"]
+    }
+  ]
+}

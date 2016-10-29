@@ -24,7 +24,7 @@ class tree {
    * false => not found
    */
   delete(key) {
-    var result = this.root.logic.insert(this.root, key);
+    var result = this.root.logic.delete(this.root, key);
     if(result === false || result === true) {
         return result;
     }

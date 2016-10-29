@@ -1,14 +1,15 @@
 {
   "name": "tree-tex",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "",
   "main": "api.js",
   "author": "Marcel Link",
   "license": "MIT",
-  "scripts": { "test" : "node ./examples.js" },
+  "scripts": { "test" : "node ./examples/build.js" },
   "dependencies": {
     "commander": "^2.9.0",
-    "escape-latex" : "^0.1.3"
+    "escape-latex" : "^0.1.3",
+    "stream-to-buffer" : "^0.1.0"
   },
   "optionalDependencies": {
     "latex": "git://github.com/ml1nk/node-latex.git#95af5c8",
