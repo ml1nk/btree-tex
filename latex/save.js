@@ -4,7 +4,7 @@ let streamToBuffer = require('stream-to-buffer');
 
 module.exports = function(filename, latexDoc, png) {
   var fs = require('fs');
-  fs.writeFile(filename+".tex",latex,function(err){
+  fs.writeFile(filename+".tex",latexDoc,function(err){
     if (err) {
       console.error("tex write error: "+filename+".tex");
     } else {

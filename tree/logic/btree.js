@@ -17,7 +17,7 @@ function generate(options,node) {
   function _insert_eintrag(me, i, key) {
       me.insertRight(i, key, null);
       return _insert_ueberlauf(me);
-  }
+    }
 
   function _insert_ueberlauf(me) {
     if(me.keys.length<degree+1) {
@@ -26,11 +26,15 @@ function generate(options,node) {
     let splitPos = Math.floor(me.keys.length/2);
 
     // B+ Tree
-    if(plus) {
+    if(plus && me.subs[0]===null) {
       me.insertLeft(splitPos+(leftOrientation ? 0 : 1),me.keys[splitPos],null);
       splitPos+=leftOrientation ? 1 : 0;
     }
-    return me.split(splitPos);
+    let result = me.split(splitPos);
+    if(result === true) {
+      return _insert_ueberlauf(me.supra);
+    }
+    return result;
   }
 
   // todo: write delete function for btree/b+tree

@@ -1,1 +1,57 @@
-[object Object]
+\documentclass{standalone}
+\RequirePackage{tikz}
+\RequirePackage{ifthen}
+\usetikzlibrary{arrows,shapes}
+\tikzstyle{btreeptr} = [draw, ultra thin, fill=blue!50, minimum height=1cm, inner sep=0cm, minimum width=0cm]
+\tikzstyle{btreeval} = [draw, semithick, fill=yellow!30, minimum size=1cm]
+\tikzstyle{btlink} = [draw, thick, ->, >=triangle 45]
+\newcommand{\xyshift}[3]{
+  \begin{scope}[xshift=#1, yshift=#2]
+    #3
+  \end{scope}
+}
+\newcommand{\btreelink}[2]{
+\draw[btlink] (#1.south) -- ([yshift=-0.1cm] #2.north); \&
+\fill (#1.south) circle[radius=0.15cm]; \\
+}
+\newcommand{\btreenodea}[2]{
+\matrix [ampersand replacement=\&] (#1)
+{
+ \node[btreeptr] (#1-a) {\vphantom{1}}; \& \node[btreeval] {#2}; \&
+ \node[btreeptr] (#1-b) {\vphantom{1}}; \\
+};
+}
+\newcommand{\btreenodeb}[3]{
+\matrix [ampersand replacement=\&] (#1)
+{
+ \node[btreeptr] (#1-a) {\vphantom{1}}; \& \node[btreeval] {#2}; \&
+ \node[btreeptr] (#1-b) {\vphantom{1}}; \& \node[btreeval] {#3}; \&
+ \node[btreeptr] (#1-c) {\vphantom{1}}; \\
+};
+}
+\newcommand{\btreenodec}[4]{
+\matrix [ampersand replacement=\&] (#1)
+{
+ \node[btreeptr] (#1-a) {\vphantom{1}}; \& \node[btreeval] {#2}; \&
+ \node[btreeptr] (#1-b) {\vphantom{1}}; \& \node[btreeval] {#3}; \&
+ \node[btreeptr] (#1-c) {\vphantom{1}}; \& \node[btreeval] {#4}; \&
+ \node[btreeptr] (#1-d) {\vphantom{1}}; \\
+};
+}
+
+\begin{document}
+\begin{tikzpicture}
+\tikzstyle{every node}=[font=\fontsize{15}{0}\selectfont]
+\xyshift{17.5mm}{-30mm}{\btreenodec{b}{a}{b}{c}}
+\xyshift{52.5mm}{-30mm}{\btreenodec{c}{d}{e}{f}}
+\xyshift{87.5mm}{-30mm}{\btreenodec{d}{g}{h}{i}}
+\xyshift{122.5mm}{-30mm}{\btreenodeb{e}{j}{k}}
+\xyshift{70mm}{0mm}{\btreenodec{a}{c}{f}{i}}
+
+
+\btreelink{a-a}{b}
+\btreelink{a-b}{c}
+\btreelink{a-c}{d}
+\btreelink{a-d}{e}
+\end{tikzpicture}
+\end{document}
